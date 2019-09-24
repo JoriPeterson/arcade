@@ -20,9 +20,9 @@ router.get("/:id", function(req, res, next) {
       id: req.params.id
     }
   })
-  .then(games => {
+  .then(game => {
     res.setHeader("Content-Type", "application/json");
-    res.status(200).send(JSON.stringify(games));
+    res.status(200).send(JSON.stringify(game));
   })
   .catch(error => {
     res.setHeader("Content-Type", "application/json");
@@ -63,7 +63,23 @@ router.put("/:id", function(req, res, next) {
 )
   .then(([rowsUpdate, [updatedGame]]) => {
     res.setHeader("Content-Type", "application/json");
-    res.status(200).send(JSON.stringify(undatedGames));
+    res.status(202).send(JSON.stringify(updatedGame));
+  })
+  .catch(error => {
+    res.setHeader("Content-Type", "application/json");
+    res.status(500).send({error});
+  });
+});
+
+router.delete("/:id", function(req, res, next) {
+  Game.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(game => {
+    res.setHeader("Content-Type", "application/json");
+    res.status(204);
   })
   .catch(error => {
     res.setHeader("Content-Type", "application/json");
